@@ -9,8 +9,9 @@ import (
 
 func main() {
 	loadConfig()
-	server := serverState{}
-	server.isChilling = true
+	server := serverState{
+		isChilling: true
+	}
 
 	server.AddDeathAction(func() {
 		log.Println("Server has died")
@@ -70,6 +71,7 @@ func loadConfig() {
 	viper.SetDefault("acceptable-heartbeat-delay", time.Second*10)
 	viper.SetDefault("address", ":8080")
 	viper.SetDefault("check-interval", time.Second*10)
+
 	err := viper.ReadInConfig()
 
 	if err != nil {
