@@ -10,7 +10,7 @@ import (
 func main() {
 	loadConfig()
 	server := serverState{
-		isChilling: true
+		isChilling: true,
 	}
 
 	server.AddDeathAction(func() {
