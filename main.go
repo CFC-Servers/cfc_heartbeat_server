@@ -14,7 +14,9 @@ func main() {
 	}
 
 	server.AddDeathAction(func() {
+		server.isChilling = true
 		log.Println("Server has died")
+		restartServer()
 	})
 
 	http.HandleFunc("/heartbeat", func(w http.ResponseWriter, r *http.Request) {
@@ -40,6 +42,7 @@ func main() {
 	}()
 
 	addr := viper.GetString("address")
+	log.Println("Listening on ", addr)
 	http.ListenAndServe(addr, nil)
 }
 
@@ -77,4 +80,19 @@ func loadConfig() {
 	if err != nil {
 		log.Println(err)
 	}
+}
+
+func restartServer() {
+	log.Println("restarting server")
+
+	req, _ := http.NewRequest("POST", viper.GetString("nanny-restart-url"), nil)
+	req.Header.Add("Authorization", viper.GetString("nanny-auth"))
+	client := http.Client{}
+
+	_, err := client.Do(req)
+	if err != nil {
+		log.Println("server restart errored", err)
+	}
+
+	log.Println("restarted server")
 }

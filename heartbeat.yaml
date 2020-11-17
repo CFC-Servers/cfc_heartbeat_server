@@ -1,3 +1,5 @@
-check-interval: 5s
-acceptable-heartbeat-delay: 30s
-address: ":8080"
+check-interval: 1s
+acceptable-heartbeat-delay: 20s
+address: ":8138"
+nanny-restart-url: "url to restart the server"
+nanny-auth: "authentication to restart  the server"
