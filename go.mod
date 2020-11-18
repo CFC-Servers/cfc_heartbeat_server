@@ -1,4 +1,4 @@
-module github.com/cfc-servers/cmd/cfc_heartbeat_server
+module github.com/cfc-servers/cfc_heartbeat_server
 
 go 1.15
 
