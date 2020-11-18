@@ -1,0 +1,9 @@
+version: "3.8"
+services:
+  web:
+    build: .
+    image: ghcr.io/cfc-servers/cfc_heartbeat_server:latest
+    volumes:
+      - /var/cfc_heartbeat_server/:/var/cfc_heartbeat_server/
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}"
