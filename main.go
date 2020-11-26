@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"time"
+	"strings"
 )
 
 func main() {
@@ -78,8 +79,12 @@ func loadConfig() {
 	err := viper.ReadInConfig()
 
 	if err != nil {
-		log.Println(err)
+		if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
+			log.Println(err)
+		}
 	}
+	viper.AutomaticEnv()
+	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
 }
 
 func restartServer() {
