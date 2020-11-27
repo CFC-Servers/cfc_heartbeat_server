@@ -5,5 +5,3 @@ services:
     image: ghcr.io/cfc-servers/cfc_heartbeat_server:latest.
     ports:
       - "$PORT:8123"
-    env_file:
-      - .env
