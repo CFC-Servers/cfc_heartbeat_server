@@ -1,6 +1,6 @@
 check-interval: 1s
 acceptable-heartbeat-delay: 20s
-address: ":8138"
+address: ":8080"
 nanny-restart-url: "url to restart the server"
 nanny-auth: "authentication to restart  the server"
 server-name: "cfc3"

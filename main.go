@@ -21,24 +21,9 @@ func main() {
 	})
 
 	server.AddDeathAction(func() {
-		url := viper.GetString("webhooker-url") + "/heartbeat-lost"
-
-		log.Println("posting to webhooker", url)
-
-		data, _ := json.Marshal(map[string]string{
-			"realm": viper.GetString("server-name"),
-			"last_heartbeat": s.lastHeartbeat.Unix()
-		})
-
-		buf = bytes.NewBuffer(data)
-
-		resp, err := http.Post(url, "application/json", buf)
-		if err != nil {
-			log.Println("webhooker request failed ", err)
-			return
-		}
-		defer resp.Body.Close()
+		webhookerHeartbeatLost(server)
 	})
+
 
 	http.HandleFunc("/heartbeat", func(w http.ResponseWriter, r *http.Request) {
 		log.Printf("Received Heartbeat")
@@ -107,6 +92,7 @@ func loadConfig() {
 	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
 }
 
+
 func restartServer() {
 	log.Println("restarting server")
 
@@ -120,4 +106,25 @@ func restartServer() {
 	}
 
 	log.Println("restarted server")
+}
+
+
+func webhookerHeartbeatLost(s serverState) {
+	url := viper.GetString("webhooker-url") + "/heartbeat-lost"
+
+	log.Println("posting to webhooker", url)
+
+	data, _ := json.Marshal(map[string]string{
+		"realm": viper.GetString("server-name"),
+		"last_heartbeat": s.lastHeartbeat.Unix()
+	})
+
+	buf = bytes.NewBuffer(data)
+
+	resp, err := http.Post(url, "application/json", buf)
+	if err != nil {
+		log.Println("webhooker request failed ", err)
+		return
+	}
+	defer resp.Body.Close()
 }
