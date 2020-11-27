@@ -3,6 +3,4 @@ services:
   web:
     build: .
     ports:
-      - "8123:8123"
-    env_file:
-      - .env
+      - "$PORT:8123"
