@@ -20,6 +20,26 @@ func main() {
 		restartServer()
 	})
 
+	server.AddDeathAction(func() {
+		url := viper.GetString("webhooker-url") + "/heartbeat-lost"
+
+		log.Println("posting to webhooker", url)
+
+		data, _ := json.Marshal(map[string]string{
+			"realm": viper.GetString("server-name"),
+			"last_heartbeat": s.lastHeartbeat.Unix()
+		})
+
+		buf = bytes.NewBuffer(data)
+
+		resp, err := http.Post(url, "application/json", buf)
+		if err != nil {
+			log.Println("webhooker request failed ", err)
+			return
+		}
+		defer resp.Body.Close()
+	})
+
 	http.HandleFunc("/heartbeat", func(w http.ResponseWriter, r *http.Request) {
 		log.Printf("Received Heartbeat")
 

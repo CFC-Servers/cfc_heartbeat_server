@@ -3,3 +3,5 @@ acceptable-heartbeat-delay: 20s
 address: ":8138"
 nanny-restart-url: "url to restart the server"
 nanny-auth: "authentication to restart  the server"
+server-name: "cfc3"
+webhooker-url: "webhooker url"
