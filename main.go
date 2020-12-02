@@ -14,9 +14,17 @@ func main() {
 	loadConfig()
 	server := serverState{
 		isChilling: true,
+		canChill: true,
 	}
 
+	lastRestart := time.Now()
 	server.AddDeathAction(func() {
+		if time.Since(lastRestart) < viper.GetDuration("restart-cooldown") {
+			return
+		}
+
+		lastRestart := time.Now()
+
 		server.Chill(true)
 		server.ChillLock()
 		defer server.ChillUnlock()
