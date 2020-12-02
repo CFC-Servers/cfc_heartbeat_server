@@ -32,12 +32,12 @@ func main() {
 		log.Printf("Received Heartbeat")
 
 		server.lastHeartbeat = time.Now()
-		server.Chill( false )
+		server.Chill(false)
 	})
 
 	http.HandleFunc("/chill", func(w http.ResponseWriter, r *http.Request) {
 		log.Printf("Received a chill request")
-		server.Chill( true )
+		server.Chill(true)
 	})
 
 	go func() {
