@@ -18,7 +18,7 @@ func main() {
 
 	server.AddDeathAction(func() {
 		server.Chill(true)
-		server.ChillLock
+		server.ChillLock()
 		defer server.ChillUnlock()
 		log.Println("Server has died")
 		restartServer()
