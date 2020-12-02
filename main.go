@@ -17,7 +17,9 @@ func main() {
 	}
 
 	server.AddDeathAction(func() {
-		server.isChilling = true
+		server.Chill(true)
+		server.ChillLock
+		defer server.ChillUnlock()
 		log.Println("Server has died")
 		restartServer()
 	})
@@ -30,12 +32,12 @@ func main() {
 		log.Printf("Received Heartbeat")
 
 		server.lastHeartbeat = time.Now()
-		server.isChilling = false
+		server.Chill( false )
 	})
 
 	http.HandleFunc("/chill", func(w http.ResponseWriter, r *http.Request) {
 		log.Printf("Received a chill request")
-		server.isChilling = true
+		server.Chill( true )
 	})
 
 	go func() {
@@ -56,7 +58,23 @@ func main() {
 type serverState struct {
 	lastHeartbeat time.Time
 	isChilling    bool
+	canChill      bool
 	deathActions  []func()
+}
+
+func (s *serverState) Chill(isChill bool) {
+	if s.canChill {
+		s.isChilling = isChill
+	}
+
+}
+
+func (s *serverState) ChillLock() {
+	s.canChill = false
+}
+
+func (s *serverState) ChillUnlock() {
+	s.canChill = true
 }
 
 func (s *serverState) IsDead() bool {
