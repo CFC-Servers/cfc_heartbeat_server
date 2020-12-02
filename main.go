@@ -23,7 +23,7 @@ func main() {
 			return
 		}
 
-		lastRestart := time.Now()
+		lastRestart = time.Now()
 
 		server.Chill(true)
 		server.ChillLock()
